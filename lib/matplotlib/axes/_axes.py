@@ -36,7 +36,9 @@ import matplotlib.text as mtext
 import matplotlib.ticker as mticker
 import matplotlib.transforms as mtransforms
 import matplotlib.tri as mtri
-from matplotlib.container import BarContainer, ErrorbarContainer, StemContainer
+from matplotlib.container import (BarContainer, ErrorbarContainer,
+                                  StemContainer, ScatterContainer,
+                                  HistContainer)
 from matplotlib.axes._base import _AxesBase
 
 iterable = cbook.iterable
@@ -3552,6 +3554,20 @@ class Axes(_AxesBase):
         self.add_collection(collection)
         self.autoscale_view()
 
+        scatter_container = ScatterContainer(x=x,
+                                             y=y,
+                                             s=s,
+                                             c=c,
+                                             marker=marker,
+                                             cmap=None,
+                                             norm=None,
+                                             vmin=None,
+                                             vmax=None,
+                                             alpha=alpha,
+                                             linewidths=linewidths,
+                                             verts=None,
+                                             **kwargs)
+        self.containers.add(scatter_container)
         return collection
 
     @docstring.dedent_interpd

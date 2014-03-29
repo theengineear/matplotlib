@@ -109,10 +109,83 @@ class BarContainer(Container):
         self.errorbar = errorbar
         Container.__init__(self, patches, **kwargs)
 
+class HistContainer(Container):
+
+    def __init__(self,
+                 x=None,
+                 nbins=None,
+                 range=None,
+                 normed=None,
+                 weights=None,
+                 cumulative=None,
+                 bottom=None,
+                 histtype=None,
+                 align=None,
+                 orientation=None,
+                 rwidth=None,
+                 log=None,
+                 color=None,
+                 label=None,
+                 stacked=None,
+                 patches=None,
+                 errorbar=None,
+                 **kwargs):
+        self.x=x
+        self.nbins=nbins
+        self.range=range
+        self.normed=normed
+        self.weights=weights
+        self.cumulative=cumulative
+        self.bottom=bottom
+        self.histtype=histtype
+        self.align=align
+        self.orientation=orientation
+        self.rwidth=rwidth
+        self.log=log
+        self.color=color
+        self.label=label
+        self.stacked=stacked
+        self.errorbar=errorbar
+
+        Container.__init__(self, patches, **kwargs)
+
+class ScatterContainer(Container):
+
+    def __init__(self,
+                 x=None,
+                 y=None,
+                 s=None,
+                 c=None,
+                 marker=None,
+                 cmap=None,
+                 norm=None,
+                 vmin=None,
+                 vmax=None,
+                 alpha=None,
+                 linewidths=None,
+                 verts=None,
+                 **kwargs):
+        self.x=x
+        self.y=y
+        self.s=s
+        self.c=c
+        self.marker=marker
+        self.cmap=cmap
+        self.norm=norm
+        self.vmin=vmin
+        self.vmax=vmax
+        self.alpha=alpha
+        self.linewidths=linewidths
+        self.verts=verts
+        Container.__init__(self, **kwargs)
 
 class ErrorbarContainer(Container):
 
-    def __init__(self, lines, has_xerr=False, has_yerr=False, **kwargs):
+    def __init__(self,
+                 lines,
+                 has_xerr=False,
+                 has_yerr=False,
+                 **kwargs):
         self.lines = lines
         self.has_xerr = has_xerr
         self.has_yerr = has_yerr
