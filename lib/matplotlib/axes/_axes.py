@@ -38,7 +38,7 @@ import matplotlib.transforms as mtransforms
 import matplotlib.tri as mtri
 from matplotlib.container import (BarContainer, ErrorbarContainer,
                                   StemContainer, ScatterContainer,
-                                  HistContainer)
+                                  HistContainer, Hist2dContainer)
 from matplotlib.axes._base import _AxesBase
 
 iterable = cbook.iterable
@@ -3554,20 +3554,25 @@ class Axes(_AxesBase):
         self.add_collection(collection)
         self.autoscale_view()
 
-        scatter_container = ScatterContainer(x=x,
-                                             y=y,
-                                             s=s,
-                                             c=c,
-                                             marker=marker,
-                                             cmap=None,
-                                             norm=None,
-                                             vmin=None,
-                                             vmax=None,
-                                             alpha=alpha,
-                                             linewidths=linewidths,
-                                             verts=None,
-                                             **kwargs)
-        self.containers.add(scatter_container)
+        call_info = dict(
+            type='scatter',
+            collection=collection,
+            x=x,
+            y=y,
+            s=s,
+            c=c,
+            marker=marker,
+            cmap=None,
+            norm=None,
+            vmin=None,
+            vmax=None,
+            alpha=alpha,
+            linewidths=linewidths,
+            verts=None,
+            kwargs=kwargs)
+
+        scatter_container = ScatterContainer([call_info], **kwargs)
+        self.add_container(scatter_container)
         return collection
 
     @docstring.dedent_interpd
@@ -5749,6 +5754,29 @@ class Axes(_AxesBase):
                 self.update_datalim(
                     [(0, bins[0]), (0, bins[-1])], updatex=False)
 
+        call_info = dict(type='hist',
+                         patches=patches,
+                         x=x,
+                         bins=bins,
+                         range=range,
+                         normed=normed,
+                         weights=weights,
+                         cumulative=cumulative,
+                         bottom=bottom,
+                         histtype=histtype,
+                         align=align,
+                         orientation=orientation,
+                         rwidth=rwidth,
+                         log=log,
+                         color=color,
+                         label=label,
+                         stacked=stacked,
+                         kwargs=kwargs
+                         )
+
+        hist_container = HistContainer([call_info], **kwargs)
+        self.add_container(hist_container)
+
         if nx == 1:
             return n[0], bins, cbook.silent_list('Patch', patches[0])
         else:
@@ -5833,6 +5861,23 @@ class Axes(_AxesBase):
         range = __builtins__["range"]
         h, xedges, yedges = np.histogram2d(x, y, bins=bins, range=bin_range,
                                            normed=normed, weights=weights)
+
+        call_info = dict(type='hist2d',
+                         x=x,
+                         y=y,
+                         bins=bins,
+                         range=range,
+                         normed=normed,
+                         weights=weights,
+                         cmin=cmin,
+                         cmax=cmax,
+                         xedges=xedges,
+                         yedges=yedges,
+                         h=h,
+                         kwargs=kwargs)
+        
+        hist2d_container = Hist2dContainer([call_info], **kwargs)
+        self.add_container(hist2d_container)
 
         if cmin is not None:
             h[h < cmin] = None

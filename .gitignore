@@ -1,3 +1,7 @@
+####################
+# IPython Notebook #
+.ipynb_checkpoints
+
 #########################################
 # Editor temporary/working/backup files #
 .#*
